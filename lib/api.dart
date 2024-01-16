@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ChatWidget extends StatelessWidget {
   final List<String> messages;
 
-  ChatWidget({required this.messages});
+  const ChatWidget({super.key, required this.messages});
 
   @override
   Widget build(BuildContext context) {

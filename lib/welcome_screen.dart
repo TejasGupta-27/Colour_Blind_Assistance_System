@@ -1,18 +1,27 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'home_page.dart'; // Import your HomePage widget
+import 'package:google_sign_in/google_sign_in.dart';
+import 'home_page.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // Delayed navigation to the next screen after 3 seconds
-    Future.delayed(Duration(seconds: 6), () {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  void _handleGoogleSignIn(BuildContext context) async {
+    try {
+      await _googleSignIn.signIn(); // Perform Google Sign-In
+
+      // Navigate to the Home Page after successful sign-in
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()), // Use your HomePage widget
+        MaterialPageRoute(builder: (context) => HomePage()),
       );
-    });
+    } catch (error) {
+      print('Google Sign-In Error: $error');
+      // Handle error or show an error message to the user
+    }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
@@ -46,6 +55,11 @@ class WelcomeScreen extends StatelessWidget {
                 fontSize: 16.0,
                 color: Colors.white,
               ),
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () => _handleGoogleSignIn(context),
+              child: Text('Sign In with Google'),
             ),
           ],
         ),

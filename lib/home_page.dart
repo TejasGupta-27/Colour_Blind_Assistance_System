@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -24,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Color Blindness Simulator'),
+        title: const Text('Color Blindness Simulator'),
       ),
       body: Center(
         child: Column(
@@ -32,12 +34,12 @@ class _HomePageState extends State<HomePage> {
           children: [
             ElevatedButton(
               onPressed: () => _pickImage(ImageSource.gallery),
-              child: Text('Choose Photo'),
+              child: const Text('Choose Photo'),
             ),
-            SizedBox(height: 10.0),
+            const SizedBox(height: 10.0),
             ElevatedButton(
               onPressed: () => _pickImage(ImageSource.camera),
-              child: Text('Take Photo'),
+              child: const Text('Take Photo'),
             ),
             if (_pickedImage != null)
               Padding(
