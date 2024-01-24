@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "635099702756",
+    "project_id": "colourblindness-c832c",
+    "storage_bucket": "colourblindness-c832c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635099702756:android:f997b8d356e2006ea1d3f1",
+        "android_client_info": {
+          "package_name": "com.example.colour_blindness"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBin6Pa-28OQ1_t7XC9a3zCFRhnn0QEr-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
