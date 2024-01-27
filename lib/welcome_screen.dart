@@ -7,6 +7,8 @@ class WelcomeScreen extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  WelcomeScreen({super.key});
+
   Future<void> _handleGoogleSignIn(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -29,6 +31,15 @@ class WelcomeScreen extends StatelessWidget {
         // User signed in
         print('Google Sign-In Successful: ${user.displayName}');
 
+        // Show a SnackBar for successful sign-in
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Welcome, ${user.displayName}!'),
+            duration: const Duration(seconds: 3),
+            shape: const OvalBorder(),
+          ),
+        );
+
         // Navigate to the Home Page or perform other actions
         Navigator.pushReplacement(
           context,
@@ -47,6 +58,7 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Check if the user is already signed in
     if (_auth.currentUser != null) {
       // User is already signed in, navigate to the Home Page
       Future.delayed(Duration.zero, () {
@@ -66,7 +78,7 @@ class WelcomeScreen extends StatelessWidget {
             Container(
               height: 80.0,
               width: 80.0,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: SweepGradient(
                   colors: [
@@ -82,9 +94,9 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20.0),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
+            const SizedBox(height: 20.0),
+            const Padding(
+              padding: EdgeInsets.all(20.0),
               child: Text(
                 'Welcome to the World of Colors!',
                 textAlign: TextAlign.center,
@@ -100,7 +112,7 @@ class WelcomeScreen extends StatelessWidget {
                   print("Button Pressed");
                   _handleGoogleSignIn(context);
                 },
-                child: Text('Sign In with Google'),
+                child: const Text('Sign In with Google'),
               ),
           ],
         ),

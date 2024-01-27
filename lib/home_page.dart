@@ -8,7 +8,7 @@ import 'auth_service.dart';
 class HomePage extends StatefulWidget {
   final AuthService authService = AuthService();
 
-  HomePage({Key? key}) : super(key: key);
+  HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Color Blindness Simulator'),
+        title: const Text('Color Blindness Simulator'),
       ),
       drawer: buildDrawer(context),
       body: Center(
@@ -40,12 +40,12 @@ class _HomePageState extends State<HomePage> {
           children: [
             ElevatedButton(
               onPressed: () => _pickImage(ImageSource.gallery),
-              child: Text('Choose Photo'),
+              child: const Text('Choose Photo'),
             ),
-            SizedBox(height: 10.0),
+            const SizedBox(height: 10.0),
             ElevatedButton(
               onPressed: () => _pickImage(ImageSource.camera),
-              child: Text('Take Photo'),
+              child: const Text('Take Photo'),
             ),
             if (_pickedImage != null)
               Padding(
@@ -70,13 +70,13 @@ class _HomePageState extends State<HomePage> {
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(
-              color: Colors.purple,
+              color: Color.fromARGB(255, 99, 16, 114),
             ),
             child: FutureBuilder<User?>(
               future: widget.authService.getCurrentUser(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 } else if (snapshot.hasData) {
                   User user = snapshot.data!;
                   return Column(
@@ -86,10 +86,10 @@ class _HomePageState extends State<HomePage> {
                         radius: 40,
                         backgroundImage: NetworkImage(user.photoURL ?? ''),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
                         user.displayName ?? '',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
                         ),
@@ -97,13 +97,13 @@ class _HomePageState extends State<HomePage> {
                     ],
                   );
                 } else {
-                  return Text('User not signed in');
+                  return const Text('User not signed in');
                 }
               },
             ),
           ),
           ListTile(
-            title: Text('Sign Out'),
+            title: const Text('Sign Out'),
             onTap: () async {
               await widget.authService.signOut();
               Navigator.of(context).pushReplacement(
