@@ -54,10 +54,10 @@ Firebase: Firebase services for authentication.
 Image Picker: Flutter plugin for picking images from the gallery or camera.
 Add other relevant dependencies...
 
-###Contributing
+### Contributing
 
 Contributions are welcome! Please follow the Contributing Guidelines.
 
-###License
+### License
 
 This project is licensed under the MIT License.   
