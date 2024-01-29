@@ -32,9 +32,7 @@ The Color Blindness Simulator App is a Flutter-based mobile application that all
 
 ### 6. Python Computer Vision
 
-- **Location:** Specify the location of the Python computer vision code.
-- **Description:** This module consists of Python scripts for computer vision tasks. It takes parameters and images from the Flutter app's backend, processes the images, and returns corrected images.
-
+To be added..
 ## Getting Started
 
 ### Prerequisites
@@ -49,3 +47,17 @@ The Color Blindness Simulator App is a Flutter-based mobile application that all
    ```bash
    git clone https://github.com/yourusername/your-repo.git
    cd your-repo
+
+### Dependencies
+
+Firebase: Firebase services for authentication.
+Image Picker: Flutter plugin for picking images from the gallery or camera.
+Add other relevant dependencies...
+
+###Contributing
+
+Contributions are welcome! Please follow the Contributing Guidelines.
+
+###License
+
+This project is licensed under the MIT License.   
