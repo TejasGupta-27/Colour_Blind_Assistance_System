@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Define the Gender enum at the top level of the file
+enum Gender { male, female }
+
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -12,61 +17,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  late String _name;
+  late String _email;
   late String _age;
-  late String _gender;
   late String _colourBlindnessType;
+  late Gender _selectedGender;
+  bool _isLoading = true;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit Profile'),
-      ),
-      body: FutureBuilder(
-        future: _loadProfileData(),
-        builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error loading profile data: ${snapshot.error}'),
-            );
-          } else {
-            return SingleChildScrollView(
-              child: _buildProfileForm(snapshot.data),
-            );
-          }
-        },
-      ),
-    );
+  void initState() {
+    super.initState();
+    _loadProfileData(); // Load profile data on initialization
   }
 
-  Future<Map<String, dynamic>> _loadProfileData() async {
+  Future<void> _loadProfileData() async {
     try {
       User? user = _auth.currentUser;
       if (user != null) {
         DocumentSnapshot userProfile =
             await _firestore.collection('users').doc(user.uid).get();
-        return userProfile.data() as Map<String, dynamic>;
+        Map<String, dynamic>? userData = userProfile.data() as Map<String, dynamic>?;
+        setState(() {
+          _name = user.displayName ?? '';
+          _email = user.email ?? '';
+          _age = userData?['age'] ?? '';
+          _colourBlindnessType = userData?['colourBlindnessType'] ?? '';
+          _selectedGender = userData?['gender'] == 'Male' ? Gender.male : Gender.female;
+          _isLoading = false;
+        });
       }
     } catch (error) {
-      throw error;
+      print('Error loading profile data: $error');
+      setState(() {
+        _isLoading = false;
+      });
     }
-    return {};
   }
 
-  Widget _buildProfileForm(Map<String, dynamic>? userData) {
-    String _name = _auth.currentUser?.displayName ?? '';
-    String _email = _auth.currentUser?.email ?? '';
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Profile'),
+      ),
+      body: _isLoading ? const Center(child: CircularProgressIndicator()) : SingleChildScrollView(
+        child: _buildProfileForm(),
+      ),
+    );
+  }
 
-    _age = userData?['age'] ?? '';
-    _gender = userData?['gender'] ?? '';
-    _colourBlindnessType = userData?['colourBlindnessType'] ?? '';
-
+  Widget _buildProfileForm() {
     return Padding(
-      padding: EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20.0),
       child: Form(
         key: _formKey,
         child: Column(
@@ -74,17 +76,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             TextFormField(
               initialValue: _name,
-              decoration: InputDecoration(labelText: 'Name'),
+              decoration: const InputDecoration(labelText: 'Name'),
               enabled: false,
             ),
             TextFormField(
               initialValue: _email,
-              decoration: InputDecoration(labelText: 'Email Address'),
+              decoration: const InputDecoration(labelText: 'Email Address'),
               enabled: false,
             ),
             TextFormField(
               initialValue: _age,
-              decoration: InputDecoration(labelText: 'Age'),
+              decoration: const InputDecoration(labelText: 'Age'),
               onChanged: (value) => _age = value,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -93,36 +95,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 return null;
               },
             ),
-            TextFormField(
-              initialValue: _gender,
-              decoration: InputDecoration(labelText: 'Gender'),
-              onChanged: (value) => _gender = value,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your gender';
-                }
-                return null;
+            _buildGenderRadioList(),
+            DropdownButtonFormField<String>(
+              value: _colourBlindnessType.isNotEmpty ? _colourBlindnessType : null,
+              onChanged: (value) {
+                setState(() {
+                  _colourBlindnessType = value!;
+                });
               },
+              items: const [
+                DropdownMenuItem(
+                  value: 'Normal',
+                  child: Text('Normal'),
+                ),
+                DropdownMenuItem(
+                  value: 'Protanomaly',
+                  child: Text('Protanomaly'),
+                ),
+                DropdownMenuItem(
+                  value: 'Deuteranomaly',
+                  child: Text('Deuteranomaly'),
+                ),
+                DropdownMenuItem(
+                  value: 'Tritanomaly',
+                  child: Text('Tritanomaly'),
+                ),
+                DropdownMenuItem(
+                  value: 'Protanopia',
+                  child: Text('Protanopia'),
+                ),
+                DropdownMenuItem(
+                  value: 'Deuteranopia',
+                  child: Text('Deuteranopia'),
+                ),
+                DropdownMenuItem(
+                  value: 'Tritanopia',
+                  child: Text('Tritanopia'),
+                ),
+                DropdownMenuItem(
+                  value: 'Achromatopsia',
+                  child: Text('Achromatopsia'),
+                ),
+                DropdownMenuItem(
+                  value: 'Achromatomaly',
+                  child: Text('Achromatomaly'),
+                ),
+              ],
+              decoration: const InputDecoration(labelText: 'Color Blindness Type'),
             ),
-            TextFormField(
-              initialValue: _colourBlindnessType,
-              decoration:
-                  InputDecoration(labelText: 'Colour Blindness Type'),
-              onChanged: (value) => _colourBlindnessType = value,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your colour blindness type';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: _submitForm,
-              child: Text('Submit'),
+              child: const Text('Submit'),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildGenderRadioList() {
+    return IntrinsicHeight(
+      child: Row(
+        children: [
+          Expanded(
+            child: RadioListTile<Gender>(
+              title: const Text('Male'),
+              value: Gender.male,
+              groupValue: _selectedGender,
+              onChanged: (value) {
+                setState(() {
+                  _selectedGender = value!;
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: RadioListTile<Gender>(
+              title: const Text('Female'),
+              value: Gender.female,
+              groupValue: _selectedGender,
+              onChanged: (value) {
+                setState(() {
+                  _selectedGender = value!;
+                });
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -132,14 +192,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       try {
         User? user = _auth.currentUser;
         if (user != null) {
+          // Update Firebase database with the changes
           await _firestore.collection('users').doc(user.uid).update({
             'age': _age,
-            'gender': _gender,
+            'gender': _selectedGender == Gender.male ? 'Male' : 'Female',
             'colourBlindnessType': _colourBlindnessType,
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Profile updated successfully'),
               backgroundColor: Colors.green,
             ),

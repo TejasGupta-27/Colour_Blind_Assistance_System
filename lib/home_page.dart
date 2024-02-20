@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
             title: const Text('Edit Profile'),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ProfileScreen()),
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
               );
             },
           ),
