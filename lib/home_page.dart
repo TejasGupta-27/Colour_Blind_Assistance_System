@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'auth_service.dart';
 import 'package:colour_blindness/profile_screen.dart';
+
 class HomePage extends StatefulWidget {
   final AuthService authService = AuthService();
 

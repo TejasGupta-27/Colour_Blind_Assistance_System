@@ -36,13 +36,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (user != null) {
         DocumentSnapshot userProfile =
             await _firestore.collection('users').doc(user.uid).get();
-        Map<String, dynamic>? userData = userProfile.data() as Map<String, dynamic>?;
+        Map<String, dynamic>? userData =
+            userProfile.data() as Map<String, dynamic>?;
         setState(() {
           _name = user.displayName ?? '';
           _email = user.email ?? '';
           _age = userData?['age'] ?? '';
           _colourBlindnessType = userData?['colourBlindnessType'] ?? '';
-          _selectedGender = userData?['gender'] == 'Male' ? Gender.male : Gender.female;
+          _selectedGender =
+              userData?['gender'] == 'Male' ? Gender.male : Gender.female;
           _isLoading = false;
         });
       }
@@ -60,9 +62,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: const Text('Edit Profile'),
       ),
-      body: _isLoading ? const Center(child: CircularProgressIndicator()) : SingleChildScrollView(
-        child: _buildProfileForm(),
-      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: _buildProfileForm(),
+            ),
     );
   }
 
@@ -97,7 +101,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             _buildGenderRadioList(),
             DropdownButtonFormField<String>(
-              value: _colourBlindnessType.isNotEmpty ? _colourBlindnessType : null,
+              value:
+                  _colourBlindnessType.isNotEmpty ? _colourBlindnessType : null,
               onChanged: (value) {
                 setState(() {
                   _colourBlindnessType = value!;
@@ -141,7 +146,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Text('Achromatomaly'),
                 ),
               ],
-              decoration: const InputDecoration(labelText: 'Color Blindness Type'),
+              decoration:
+                  const InputDecoration(labelText: 'Color Blindness Type'),
             ),
             const SizedBox(height: 20.0),
             ElevatedButton(
