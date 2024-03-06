@@ -1,0 +1,7 @@
+{
+    "image": "colour_blindness",
+    "extensions": ["dart-code.dart-code", "dart-code.flutter"],
+    "settings": {
+        "dart.flutterSdkPath": "/path/to/flutter-sdk"
+    }
+}
