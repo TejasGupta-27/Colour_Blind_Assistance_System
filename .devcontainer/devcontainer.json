@@ -1,7 +1,13 @@
 {
-    "image": "colour_blindness",
-    "extensions": ["dart-code.dart-code", "dart-code.flutter"],
-    "settings": {
-        "dart.flutterSdkPath": "/path/to/flutter-sdk"
+    "name": "Flutter Development",
+    "image": "cirrusci/flutter:stable",
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "terminal.integrated.shell.linux": "/bin/bash"
+        },
+        "extensions": ["dart-code.dart-code", "dart-code.flutter"]
+      }
     }
-}
+  }
+  
