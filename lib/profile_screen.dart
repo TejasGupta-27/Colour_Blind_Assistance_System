@@ -30,29 +30,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _loadProfileData(); // Load profile data on initialization
   }
 
-  Future<void> _loadProfileData() async {
-    try {
-      User? user = _auth.currentUser;
-      if (user != null) {
-        DocumentSnapshot userProfile =
-            await _firestore.collection('users').doc(user.uid).get();
-        Map<String, dynamic>? userData = userProfile.data() as Map<String, dynamic>?;
-        setState(() {
-          _name = user.displayName ?? '';
-          _email = user.email ?? '';
-          _age = userData?['age'] ?? '';
-          _colourBlindnessType = userData?['colourBlindnessType'] ?? '';
-          _selectedGender = userData?['gender'] == 'Male' ? Gender.male : Gender.female;
-          _isLoading = false;
+Future<void> _loadProfileData() async {
+  try {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      DocumentSnapshot userProfile =
+          await _firestore.collection('users').doc(user.uid).get();
+      Map<String, dynamic>? userData = userProfile.data() as Map<String, dynamic>?;
+
+      if (!userProfile.exists) {
+        // Document doesn't exist, create a new one
+        await _firestore.collection('users').doc(user.uid).set({
+          'age': '', // Set default values or leave them empty
+          'gender': '', 
+          'colourBlindnessType': '',
         });
+        // Refresh the userProfile object after creating the document
+        userProfile = await _firestore.collection('users').doc(user.uid).get();
+        userData = userProfile.data() as Map<String, dynamic>?; // Get updated data
       }
-    } catch (error) {
-      print('Error loading profile data: $error');
+
       setState(() {
+        _name = user.displayName ?? '';
+        _email = user.email ?? '';
+        _age = userData?['age'] ?? '';
+        _colourBlindnessType = userData?['colourBlindnessType'] ?? '';
+        _selectedGender = userData?['gender'] == 'Male' ? Gender.male : Gender.female;
         _isLoading = false;
       });
     }
+  } catch (error) {
+    print('Error loading profile data: $error');
+    setState(() {
+      _isLoading = false;
+    });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

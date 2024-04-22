@@ -75,37 +75,41 @@ class _HomePageState extends State<HomePage> {
   }
 
   String findClosestColor(Color dominantColor) {
-    Map<String, Color> colorMap = {
-      'Red': Colors.red,
-      'Green': Colors.green,
-      'Blue': Colors.blue,
-      'Yellow': Colors.yellow,
-      'Cyan': Colors.cyan,
-      'Magenta': Colors.purple,
-      'Purple': Colors.purple,
-      'Pink': Colors.pink,
-      'Orange': Colors.orange,
-      'Teal': Colors.teal,
-      'Brown': Colors.brown,
-      'Lime': Colors.lime,
-      'Maroon': Colors.brown,
-      'Navy': Colors.blue,
-      'Olive': Colors.green,
-      'Indigo': Colors.indigo,
-      'Aquamarine': Colors.greenAccent,
-      'Turquoise': Colors.cyanAccent,
-      'Silver': Colors.grey,
-      'Gray': Colors.grey,
-      'Black': Colors.black,
-      'White': Colors.white,
-      // Add more color names as needed
-    };
-
     double minDistance = double.infinity;
     String closestColor = '';
 
-    colorMap.forEach((name, color) {
-      double distance = _calculateDistance(color, dominantColor);
+    Map<String, String> colorNames = {
+      'Red': '#FF0000',
+      'Green': '#00FF00',
+      'Blue': '#0000FF',
+      'Yellow': '#FFFF00',
+      'Cyan': '#00FFFF',
+      'Magenta': '#FF00FF',
+      'Purple': '#800080',
+      'Pink': '#FFC0CB',
+      'Orange': '#FFA500',
+      'Teal': '#008080',
+      'Brown': '#A52A2A',
+      'Lime': '#00FF00',
+      'Maroon': '#800000',
+      'Navy': '#000080',
+      'Olive': '#808000',
+      'Indigo': '#4B0082',
+      'Aquamarine': '#7FFFD4',
+      'Turquoise': '#40E0D0',
+      'Silver': '#C0C0C0',
+      'Gray': '#808080',
+      'Black': '#000000',
+      'White': '#FFFFFF',
+      // Add more color names as needed
+    };
+
+    colorNames.forEach((name, hex) {
+      Color color = Color(int.parse(hex.replaceAll('#', ''), radix: 16));
+      double distance = ((color.red - dominantColor.red).abs() +
+              (color.green - dominantColor.green).abs() +
+              (color.blue - dominantColor.blue).abs()) /
+          3.0; // Calculate the average distance for RGB components
 
       if (distance < minDistance) {
         minDistance = distance;
@@ -116,19 +120,11 @@ class _HomePageState extends State<HomePage> {
     return closestColor;
   }
 
-  double _calculateDistance(Color color1, Color color2) {
-    double r = (color1.red - color2.red).abs().toDouble();
-    double g = (color1.green - color2.green).abs().toDouble();
-    double b = (color1.blue - color2.blue).abs().toDouble();
-
-    return r + g + b;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Image Labeling & Color Detection'),
+        title: const Text('Colour Blindness Aid'),
       ),
       drawer: buildDrawer(context),
       body: Center(
@@ -227,14 +223,14 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-          ListTile(
-            title: const Text('Edit Profile'),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const ProfileScreen()),
-              );
-            },
-          ),
+          // ListTile(
+          //   title: const Text('Edit Profile'),
+          //   onTap: () {
+          //     Navigator.of(context).push(un 
+          //       MaterialPageRoute(builder: (context) => const ProfileScreen()),
+          //     );
+          //   },
+          // ),
           ListTile(
             title: const Text('Mosaic Test'),
             onTap: () {
