@@ -31,7 +31,7 @@ The Color Blindness Simulator App is a Flutter-based mobile application that all
 - **Description:** The API Integration module handles communication with the backend. It includes methods for sending and receiving data related to user details and color blindness information.
 
 ### 6. Python Computer Vision
-Google Ml kit usef 
+Google Ml kit used
 ## Getting Started
 
 ### Prerequisites
