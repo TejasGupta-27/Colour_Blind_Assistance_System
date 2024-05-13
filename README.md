@@ -1,7 +1,7 @@
 # Colour_Blind_Assistance_System
 # Color Blindness Simulator App
 
-The Color Blindness Simulator App is a Flutter-based mobile application that allows users to simulate how individuals with color blindness perceive images. It includes features like choosing photos from the gallery or taking photos using the camera, applying color correction, and displaying the corrected images.
+The Color Blindness Simulator App is a Flutter-based mobile application that allows individuals with color blindness perceive images. It includes features like choosing photos from the gallery or taking photos using the camera,and classify the image provided and also give the colour of the object.
 
 ## Modules
 
@@ -31,8 +31,7 @@ The Color Blindness Simulator App is a Flutter-based mobile application that all
 - **Description:** The API Integration module handles communication with the backend. It includes methods for sending and receiving data related to user details and color blindness information.
 
 ### 6. Python Computer Vision
-
-To be added..
+Google Ml kit usef 
 ## Getting Started
 
 ### Prerequisites
